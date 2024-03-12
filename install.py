@@ -68,7 +68,27 @@ def download_depth_ckpt():
            'resolve/main/annotator/ckpts/dpt_hybrid-midas-501f0c75.pt')
     download(url, 'src/ControlNet/annotator/ckpts')
 
+def download_ebsynth_ckpt():
+    os_str = platform.system()
+    if os_str == 'Linux':
+        url = ('https://huggingface.co/PKUWilliamYang/Rerender/'
+               'resolve/main/models/ebsynth')
+        download(url, 'src/ebsynth/deps/ebsynth/bin')
+    elif os_str == 'Windows':
+        url = ('https://huggingface.co/PKUWilliamYang/Rerender/'
+               'resolve/main/models/ebsynth.exe')
+        download(url, 'src/ebsynth/deps/ebsynth/bin')  
+        url = ('https://huggingface.co/PKUWilliamYang/Rerender/'
+               'resolve/main/models/ebsynth_cpu.dll')
+        download(url, 'src/ebsynth/deps/ebsynth/bin')
+        url = ('https://huggingface.co/PKUWilliamYang/Rerender/'
+               'resolve/main/models/ebsynth_cpu.exe')
+        download(url, 'src/ebsynth/deps/ebsynth/bin')
+    else:
+        print('No available compiled Ebsynth.')
+
 #build_ebsynth()
+download_ebsynth_ckpt()
 download_gmflow_ckpt()
 download_egnet_ckpt()
 download_hed_ckpt()
