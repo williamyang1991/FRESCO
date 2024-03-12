@@ -25,6 +25,7 @@ Extensive experiments demonstrate the effectiveness of our proposed framework in
 ### TODO
 - [x] Add webUI.
 - [x] Upload paper to arXiv, release related material
+- [x] Update readme
 
 ## Installation
 
@@ -36,11 +37,11 @@ cd FRESCO
 ```
 
 2. You can simply set up the environment with pip based on the `requirements.txt`
-- We have tested on torch 2.0.0/2.1.0 and diffusers 0.19.3
-- If you use new versions of diffusers, you need to modify [my_forward()](https://github.com/williamyang1991/FRESCO/blob/fb991262615665de88f7a8f2cc903d9539e1b234/src/diffusion_hacked.py#L496)
+    - We have tested on torch 2.0.0/2.1.0 and diffusers 0.19.3
+    - If you use new versions of diffusers, you need to modify [my_forward()](https://github.com/williamyang1991/FRESCO/blob/fb991262615665de88f7a8f2cc903d9539e1b234/src/diffusion_hacked.py#L496)
 
 3. Run the installation script. The required models will be downloaded in `./model`, `./src/ControlNet/annotator` and `./src/ebsynth/deps/ebsynth/bin`.
-- Requires access to huggingface.co
+    - Requires access to huggingface.co
 
 ```shell
 python install.py
@@ -51,4 +52,39 @@ python install.py
 ```shell
 python run_fresco.py ./config/config_music.yaml
 ```
+
+5. For issues with Ebsynth, please refer to [issues](https://github.com/williamyang1991/Rerender_A_Video#issues)
+
+
+## (1) Inference
+
+### WebUI (recommended)
+
+TBA
+
+### Command Line
+
+TBA
+
+## (2) Results
+
+TBA
+
+## Citation
+
+If you find this work useful for your research, please consider citing our paper:
+
+```bibtex
+@inproceedings{yang2024fresco,
+ title = {FRESCO: Spatial-Temporal Correspondence for Zero-Shot Video Translation},
+ author = {Yang, Shuai and Zhou, Yifan and Liu, Ziwei and and Loy, Chen Change},
+ booktitle = {CVPR},
+ year = {2024},
+}
+```
+
+## Acknowledgments
+
+The code is mainly developed based on [Rerender-A-Video](https://github.com/williamyang1991/Rerender_A_Video), [ControlNet](https://github.com/lllyasviel/ControlNet), [Stable Diffusion](https://github.com/Stability-AI/stablediffusion), [GMFlow](https://github.com/haofeixu/gmflow) and [Ebsynth](https://github.com/jamriska/ebsynth).
+
 
