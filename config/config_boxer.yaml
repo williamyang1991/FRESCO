@@ -1,0 +1,27 @@
+# data
+file_path: './data/boxer-punching-towards-camera.mp4'
+save_path: './output/boxer-punching-towards-camera/'
+mininterv: 2 # for keyframe selection
+maxinterv: 2 # for keyframe selection
+
+# diffusion
+seed: 0
+prompt: 'An African American boxer wearing black boxing gloves punches towards the camera, cartoon style'
+sd_path: 'stablediffusionapi/flat-2d-animerge' 
+use_controlnet: True
+controlnet_type: 'depth'  # 'hed', 'canny'
+cond_scale: 0.7
+use_freeu: False
+
+# video-to-video translation 
+batch_size: 8
+num_inference_steps: 20
+num_warmup_steps: 5
+end_opt_step: 15
+run_ebsynth: False
+max_process: 4
+
+# supporting model
+gmflow_path: './model/gmflow_sintel-0c07dcb3.pth'
+sod_path: './model/epoch_resnet.pth'
+use_salinecy: True

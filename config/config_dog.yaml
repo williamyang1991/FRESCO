@@ -1,0 +1,27 @@
+# data
+file_path: './data/dog.mp4'
+save_path: './output/dog/'
+mininterv: 10 # for keyframe selection
+maxinterv: 30 # for keyframe selection
+
+# diffusion
+seed: 0
+prompt: 'greetings from a fox by shaking front paws'
+sd_path: 'SG161222/Realistic_Vision_V2.0' 
+use_controlnet: True
+controlnet_type: 'hed'  # 'depth', 'canny'
+cond_scale: 1.0
+use_freeu: False
+
+# video-to-video translation 
+batch_size: 8
+num_inference_steps: 20
+num_warmup_steps: 8
+end_opt_step: 15
+run_ebsynth: False
+max_process: 4
+
+# supporting model
+gmflow_path: './model/gmflow_sintel-0c07dcb3.pth'
+sod_path: './model/epoch_resnet.pth'
+use_salinecy: True
