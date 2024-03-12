@@ -18,3 +18,37 @@ Extensive experiments demonstrate the effectiveness of our proposed framework in
 - **Flexibility**: compatible with off-the-shelf models (e.g., [ControlNet](https://github.com/lllyasviel/ControlNet), [LoRA](https://civitai.com/)) for customized translation.
 
 
+## Updates
+- [03/2023] Code is released.
+- [03/2024] This website is created.
+
+### TODO
+- [x] Add webUI.
+- [x] Upload paper to arXiv, release related material
+
+## Installation
+
+1. Clone the repository. 
+
+```shell
+git clone git@github.com:williamyang1991/FRESCO.git --recursive
+cd FRESCO
+```
+
+2. You can simply set up the environment with pip based on the `requirements.txt`
+- We have tested on torch 2.0.0/2.1.0 and diffusers 0.19.3
+- If you use new versions of diffusers, you need to modify [my_forward()](https://github.com/williamyang1991/FRESCO/blob/fb991262615665de88f7a8f2cc903d9539e1b234/src/diffusion_hacked.py#L496)
+
+3. Run the installation script. The required models will be downloaded in `./model`, `./src/ControlNet/annotator` and `./src/ebsynth/deps/ebsynth/bin`.
+- Requires access to huggingface.co
+
+```shell
+python install.py
+```
+
+4. You can run the demo with `run_fresco.py`
+
+```shell
+python run_fresco.py ./config/config_music.yaml
+```
+
