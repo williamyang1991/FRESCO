@@ -38,7 +38,7 @@ https://github.com/williamyang1991/FRESCO/assets/18130694/aad358af-4d27-4f18-b06
 1. Clone the repository. 
 
 ```shell
-git clone git@github.com:williamyang1991/FRESCO.git --recursive
+git clone https://github.com/williamyang1991/FRESCO.git
 cd FRESCO
 ```
 
