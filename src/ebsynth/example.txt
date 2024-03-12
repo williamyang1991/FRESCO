@@ -1,0 +1,14 @@
+CUDA_VISIBLE_DEVICES=1 python video_blend.py ../diffusers/output/pexels-koolshooters-7322716 \
+  --key_ind 0 5 33 46 58 69 75 81 87 95 102 108 115 130 139 167 184 190 195 204 211 224 230 \
+  --key keys \
+  --output ../diffusers/output/pexels-koolshooters-7322716/blend.mp4 \
+  --fps 25.0 \
+  -ps
+
+
+CUDA_VISIBLE_DEVICES=7 python ./video_blend.py ../../output/car-turn \
+  --key_ind 0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 \
+  --key keys \
+  --output ../../output/car-turn/blend.mp4 \
+  --fps 10.0 \
+  -ps
