@@ -18,10 +18,7 @@ Extensive experiments demonstrate the effectiveness of our proposed framework in
 - **Zero-shot**: no training or fine-tuning required.
 - **Flexibility**: compatible with off-the-shelf models (e.g., [ControlNet](https://github.com/lllyasviel/ControlNet), [LoRA](https://civitai.com/)) for customized translation.
 
-
-
 https://github.com/williamyang1991/FRESCO/assets/18130694/aad358af-4d27-4f18-b069-89a1abd94d38
-
 
 
 ## Updates
@@ -29,7 +26,7 @@ https://github.com/williamyang1991/FRESCO/assets/18130694/aad358af-4d27-4f18-b06
 - [03/2024] This website is created.
 
 ### TODO
-- [x] Add webUI.
+- [x] ~~Add webUI.~~
 - [x] Upload paper to arXiv, release related material
 - [x] Update readme
 
@@ -66,7 +63,77 @@ python run_fresco.py ./config/config_music.yaml
 
 ### WebUI (recommended)
 
+```
+python webUI.py
+```
+The Gradio app also allows you to flexibly change the inference options. Just try it for more details. 
+
+Upload your video, input the prompt, select the model and seed, and hit:
+- **Run Key Frames**: detect keyframes, translate all keyframes.
+- **Run Propagation**: propagate the keyframes to other frames for full video translation
+- **Run All**: **Run Key Frames** and **Run Propagation**
+
+Select the model:
+- **Base model**: base Stable Diffusion model (SD 1.5)
+    - Stable Diffusion 1.5: official model
+    - [rev-Animated](https://huggingface.co/stablediffusionapi/rev-animated): a semi-realistic (2.5D) model
+    - [realistic-Vision](https://huggingface.co/SG161222/Realistic_Vision_V2.0): a photo-realistic model
+    - [flat2d-animerge](https://huggingface.co/stablediffusionapi/flat-2d-animerge): a cartoon model
+    - You can add other models on huggingface.co by modifying this [line](https://github.com/williamyang1991/FRESCO/blob/1afcca9c7b1bc1ac68254f900be9bd768fbb6988/webUI.py#L362) 
+   
 ![overview](https://github.com/williamyang1991/FRESCO/assets/18130694/6ce5d54e-b020-4e43-95e7-72ab1783f482)
+
+We provide abundant advanced options to play with
+
+</details>
+
+<details id="option1">
+<summary> <b>Advanced options for single frame processing</b></summary>
+
+1. **Frame resolution**: resize the short side of the video to 512.
+2. ControlNet related:
+   - **ControlNet strength**: how well the output matches the input control edges
+   - **Control type**: HED edge, Canny edge, Depth map
+   - **Canny low/high threshold**: low values for more edge details
+3. SDEdit related:
+   - **Denoising strength**: repaint degree (low value to make the output look more like the original video)
+   - **Preserve color**: preserve the color of the original video
+4. SD related:
+   - **Steps**: denoising step
+   - **CFG scale**: how well the output matches the prompt
+   - **Added prompt/Negative prompt**: supplementary prompts
+5. FreeU related:
+   - **FreeU first/second-stage backbone factor**: =1 do nothing; >1 enhance output color and details
+   - **FreeU first/second-stage skip factor**: =1 do nothing; <1 enhance output color and details
+
+</details>
+
+<details id="option2">
+<summary> <b>Advanced options for FRESCO constraints</b></summary>
+
+1. Keyframe related
+   - **Number of frames**: Total frames to be translated
+   - **Number of frames in a batch**: To avoid out-of-memory, use small batch size
+   - **Min keyframe interval (s_min)**: The keyframes will be detected at least every s_min frames
+   - **Max keyframe interval (s_max)**: The keyframes will be detected at most every s_max frames
+2. FRESCO constraints
+   - FRESCO-guided Attention:
+     - **spatial-guided attention**: Check to enable spatial-guided attention
+     - **cross-frame attention**: Check to enable efficient cross-frame attention
+     - **temporal-guided attention**: Check to enable temporal-guided attention
+   - FRESCO-guided optimization:
+     - **spatial-guided optimization**: Check to enable spatial-guided optimization
+     - **temporal-guided optimization**: Check to enable temporal-guided optimization
+3. **Background smoothing**: Check to enable background smoothing (best for static background)
+   
+</details>
+
+<details id="option3">
+<summary> <b>Advanced options for the full video translation</b></summary>
+
+1. **Gradient blending**: apply Poisson Blending to reduce ghosting artifacts. May slow the process and increase flickers.
+2. **Number of parallel processes**: multiprocessing to speed up the process. Large value (4) is recommended.
+</details>
 
 ![option](https://github.com/williamyang1991/FRESCO/assets/18130694/72600758-1dff-4b7c-8f3f-65ee3909f8f6)
 
@@ -81,6 +148,11 @@ python run_fresco.py ./config/config_music.yaml
 We provide some examples of the config in `config` directory.
 Most options in the config is the same as those in WebUI.
 Please check the explanations in the WebUI section.
+
+We provide a separate Ebsynth python script `video_blend.py` with the temporal blending algorithm introduced in
+[Stylizing Video by Example](https://dcgi.fel.cvut.cz/home/sykorad/ebsynth.html) for interpolating style between key frames.
+It can work on your own stylized key frames independently of our FRESCO algorithm.
+For the details, please refer to our previous work [Rerender-A-Video](https://github.com/williamyang1991/Rerender_A_Video/tree/main?tab=readme-ov-file#our-ebsynth-implementation)
 
 ## (2) Results
 
