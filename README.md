@@ -70,8 +70,15 @@ TBA
 
 ### Command Line
 
+We provide a flexible script `run_fresco.py` to run our method.
 
-TBA
+Set the options via a config file. For example,
+```shell
+python run_fresco.py ./config/config_music.yaml
+```
+We provide some examples of the config in `config` directory.
+Most options in the config is the same as those in WebUI.
+Please check the explanations in the WebUI section.
 
 ## (2) Results
 
