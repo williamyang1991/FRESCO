@@ -420,7 +420,7 @@ def optimize_feature(sample, flows, occs, correlation_matrix=[],
     * optimize spatial correspondence (match correlation_matrix)
     * optimize temporal correspondence (match warped_image)
     """
-    if (flows is None or occs is None) and intra_weight == 0:
+    if (flows is None or occs is None or (not optimize_temporal)) and (intra_weight == 0 or len(correlation_matrix) == 0):
         return sample
     # flows=[fwd_flows, bwd_flows]: (N-1)*2*H1*W1
     # occs=[fwd_occs, bwd_occs]: (N-1)*H1*W1
