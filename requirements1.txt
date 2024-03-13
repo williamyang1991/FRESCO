@@ -1,0 +1,18 @@
+# torch 2.1.0
+torch==2.1.0
+diffusers[torch]==0.19.3
+transformers
+torchvision==0.16.0
+opencv-python
+einops
+matplotlib
+timm
+av
+basicsr==1.4.2
+# for ebsynth
+numba==0.57.0
+imageio-ffmpeg
+
+
+# for webUI
+pip install gradio==3.44.4

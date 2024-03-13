@@ -39,9 +39,21 @@ git clone https://github.com/williamyang1991/FRESCO.git
 cd FRESCO
 ```
 
-2. You can simply set up the environment with pip based on [requirements.txt](https://github.com/williamyang1991/FRESCO/blob/main/requirements.txt)
-    - We have tested on torch 2.0.0/2.1.0 and diffusers 0.19.3
-    - If you use new versions of diffusers, you need to modify [my_forward()](https://github.com/williamyang1991/FRESCO/blob/fb991262615665de88f7a8f2cc903d9539e1b234/src/diffusion_hacked.py#L496)
+2. You can simply set up the environment with conda and pip based on [requirements.txt](https://github.com/williamyang1991/FRESCO/blob/main/requirements.txt)
+```shell
+conda create -n fresco python==3.8.5
+conda activate fresco
+```
+```shell
+# for torch 2.1.0
+pip install -r requirements1.txt
+# for torch 2.0.0
+pip install -r requirements2.txt
+```
+   - We have tested on torch 2.0.0/2.1.0 and diffusers 0.19.3
+   - If you use new versions of diffusers, you need to modify [my_forward()](https://github.com/williamyang1991/FRESCO/blob/fb991262615665de88f7a8f2cc903d9539e1b234/src/diffusion_hacked.py#L496)
+   
+
 
 3. Run the installation script. The required models will be downloaded in `./model`, `./src/ControlNet/annotator` and `./src/ebsynth/deps/ebsynth/bin`.
     - Requires access to huggingface.co
@@ -195,4 +207,7 @@ If you find this work useful for your research, please consider citing our paper
 
 The code is mainly developed based on [Rerender-A-Video](https://github.com/williamyang1991/Rerender_A_Video), [ControlNet](https://github.com/lllyasviel/ControlNet), [Stable Diffusion](https://github.com/Stability-AI/stablediffusion), [GMFlow](https://github.com/haofeixu/gmflow) and [Ebsynth](https://github.com/jamriska/ebsynth).
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=williamyang1991/FRESCO&type=Date)](https://star-history.com/#williamyang1991/FRESCO&Date)
 
