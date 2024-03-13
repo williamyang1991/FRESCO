@@ -84,8 +84,21 @@ Please check the explanations in the WebUI section.
 
 ### Key frame translation
 
+<table class="center">
+<tr>
+  <td><img src="https://github.com/williamyang1991/FRESCO/assets/18130694/e8d5776a-37c5-49ae-8ab4-15669df6f572" raw=true></td>
+  <td><img src="https://github.com/williamyang1991/FRESCO/assets/18130694/8a792af6-555c-4e82-ac1e-5c2e1ee35fdb" raw=true></td>
+  <td><img src="https://github.com/williamyang1991/FRESCO/assets/18130694/10f9a964-85ac-4433-84c5-1611a6c2c434" raw=true></td>
+  <td><img src="https://github.com/williamyang1991/FRESCO/assets/18130694/0ec0fbf9-90dd-4d8b-964d-945b5f6687c2" raw=true></td>
+</tr>
+<tr>
+  <td width=26.5% align="center">a red car turns in the winter</td>
+  <td width=26.5% align="center">an African American boxer wearing black boxing gloves punches towards the camera, cartoon style</td>
+  <td width=26.5% align="center">a cartoon spiderman in black suit, black shoes and white gloves is dancing</td>
+  <td width=20.5% align="center">a beautiful woman holding her glasses in CG style</td>
+</tr>
+</table>
 
-TBA
 
 ### Full video translation
 
