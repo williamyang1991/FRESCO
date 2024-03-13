@@ -212,9 +212,9 @@ def run_keyframe_translation(config):
         Flexible settings for attention:
         * Turn off FRESCO-guided attention: frescoProc.controller.disable_controller() 
         Then you can turn on one specific attention submodule
-        * Turn on Cross-frame attention: frescoProc.controller.enable_cfattn() 
+        * Turn on Cross-frame attention: frescoProc.controller.enable_cfattn(attn_mask) 
         * Turn on Spatial-guided attention: frescoProc.controller.enable_intraattn() 
-        * Turn on Temporal-guided attention: frescoProc.controller.enable_interattn()
+        * Turn on Temporal-guided attention: frescoProc.controller.enable_interattn(interattn_paras)
     
         Flexible settings for optimization:
         * Turn off Spatial-guided optimization: set optimize_temporal = False in apply_FRESCO_opt()
