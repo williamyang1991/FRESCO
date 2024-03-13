@@ -66,7 +66,9 @@ python run_fresco.py ./config/config_music.yaml
 
 ### WebUI (recommended)
 
-TBA
+![overview](https://github.com/williamyang1991/FRESCO/assets/18130694/6ce5d54e-b020-4e43-95e7-72ab1783f482)
+
+![option](https://github.com/williamyang1991/FRESCO/assets/18130694/72600758-1dff-4b7c-8f3f-65ee3909f8f6)
 
 ### Command Line
 
