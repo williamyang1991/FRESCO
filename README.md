@@ -13,7 +13,7 @@ In this paper, we introduce FRESCO, intra-frame correspondence alongside inter-f
 Extensive experiments demonstrate the effectiveness of our proposed framework in producing high-quality, coherent videos, marking a notable improvement over existing zero-shot methods.*
 
 **Features**:<br>
-- **Temporal consistency**: use robust intra-and inter-frame constraint with better consistency and coverage than optical flow alone.
+- **Temporal consistency**: use intra-and inter-frame constraint with better consistency and coverage than optical flow alone.
     - Compared with our previous work [Rerender-A-Video](https://github.com/williamyang1991/Rerender_A_Video), FRESCO is more robust to large and quick motion.
 - **Zero-shot**: no training or fine-tuning required.
 - **Flexibility**: compatible with off-the-shelf models (e.g., [ControlNet](https://github.com/lllyasviel/ControlNet), [LoRA](https://civitai.com/)) for customized translation.
@@ -27,8 +27,8 @@ https://github.com/williamyang1991/FRESCO/assets/18130694/aad358af-4d27-4f18-b06
 
 ### TODO
 - [x] ~~Add webUI.~~
+- [x] ~~Update readme~~
 - [x] Upload paper to arXiv, release related material
-- [x] Update readme
 
 ## Installation
 
