@@ -4,7 +4,7 @@
 **FRESCO: Spatial-Temporal Correspondence for Zero-Shot Video Translation**<br>
 [Shuai Yang](https://williamyang1991.github.io/), [Yifan Zhou](https://zhouyifan.net/), [Ziwei Liu](https://liuziwei7.github.io/) and [Chen Change Loy](https://www.mmlab-ntu.com/person/ccloy/)<br>
 in CVPR 2024 <br>
-[**Project Page**]() | [**Paper**]() | [**Supplementary Video**]() | [**Input Data and Video Results**]() <br>
+[**Project Page**]() | [**Paper**]() | [**Supplementary Video**]() | [**Input Data and Video Results**](https://drive.google.com/file/d/12BFx3hp8_jp9m0EmKpw-cus2SABPQx2Q/view?usp=sharing) <br>
 
 **Abstract:** *The remarkable efficacy of text-to-image diffusion models has motivated extensive exploration of their potential application in video domains.
 Zero-shot methods seek to extend image diffusion models to videos without necessitating model training.
