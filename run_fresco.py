@@ -59,7 +59,7 @@ def get_models(config):
     # controlnet
     if config['controlnet_type'] not in ['hed', 'depth', 'canny']:
         print('unsupported control type, set to hed')
-        oconfig['controlnet_type'] = 'hed'
+        config['controlnet_type'] = 'hed'
     controlnet = ControlNetModel.from_pretrained("lllyasviel/sd-controlnet-"+config['controlnet_type'], 
                                                  torch_dtype=torch.float16)
     controlnet.to("cuda") 
