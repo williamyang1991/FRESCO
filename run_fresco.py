@@ -305,7 +305,7 @@ if __name__ == '__main__':
 
     print('=' * 100)
     print('loading configuration...')
-    with open('./config/config_carturn.yaml', "r") as f:
+    with open(opt.config_path, "r") as f:
         config = yaml.safe_load(f)
         
     for name, value in sorted(config.items()):
