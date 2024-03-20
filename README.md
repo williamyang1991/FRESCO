@@ -4,7 +4,7 @@
 **FRESCO: Spatial-Temporal Correspondence for Zero-Shot Video Translation**<br>
 [Shuai Yang](https://williamyang1991.github.io/), [Yifan Zhou](https://zhouyifan.net/), [Ziwei Liu](https://liuziwei7.github.io/) and [Chen Change Loy](https://www.mmlab-ntu.com/person/ccloy/)<br>
 in CVPR 2024 <br>
-[**Project Page**](https://www.mmlab-ntu.com/project/fresco/) | [**Paper**]() | [**Supplementary Video**](https://youtu.be/jLnGx5H-wLw) | [**Input Data and Video Results**](https://drive.google.com/file/d/12BFx3hp8_jp9m0EmKpw-cus2SABPQx2Q/view?usp=sharing) <br>
+[**Project Page**](https://www.mmlab-ntu.com/project/fresco/) | [**Paper**](https://arxiv.org/abs/2403.12962) | [**Supplementary Video**](https://youtu.be/jLnGx5H-wLw) | [**Input Data and Video Results**](https://drive.google.com/file/d/12BFx3hp8_jp9m0EmKpw-cus2SABPQx2Q/view?usp=sharing) <br>
 
 **Abstract:** *The remarkable efficacy of text-to-image diffusion models has motivated extensive exploration of their potential application in video domains.
 Zero-shot methods seek to extend image diffusion models to videos without necessitating model training.
@@ -22,13 +22,14 @@ https://github.com/williamyang1991/FRESCO/assets/18130694/aad358af-4d27-4f18-b06
 
 
 ## Updates
+- [03/2023] Paper is released.
 - [03/2023] Code is released.
 - [03/2024] This website is created.
 
 ### TODO
 - [x] ~~Add webUI.~~
 - [x] ~~Update readme~~
-- [x] Upload paper to arXiv, release related material
+- [x] ~~Upload paper to arXiv, release related material~~
 
 ## Installation
 
