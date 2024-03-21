@@ -146,7 +146,7 @@ class GlobalState:
         self.sd_model = sd_model
         vae = AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse", torch_dtype=torch.float16)
         self.pipe = StableDiffusionPipeline.from_pretrained(sd_model, vae=vae, torch_dtype=torch.float16)
-        self.pipe.scheduler = DDPMScheduler.from_config(pipe.scheduler.config)
+        self.pipe.scheduler = DDPMScheduler.from_config(self.pipe.scheduler.config)
         self.pipe.to("cuda")
         self.frescoProc = apply_FRESCO_attn(self.pipe)
         self.frescoProc.controller.disable_controller()
