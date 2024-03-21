@@ -3,7 +3,7 @@ conda create --name diffuser python==3.8.5
 conda activate diffuser
 pip install --upgrade diffusers[torch]==0.19.3
 pip install transformers
-pip install torchvision=0.16.0
+pip install torchvision==0.16.0
 pip install opencv-python
 pip install einops
 pip install matplotlib
