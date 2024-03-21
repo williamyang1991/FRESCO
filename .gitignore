@@ -1,0 +1,8 @@
+model/
+output/
+*.pt
+*.pth
+*.png
+src/ebsynth/
+
+.DS_Store

@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+torch = "==2.1.0"
+diffusers = {version = "==0.19.3", extras = ["torch"]}
+transformers = "*"
+torchvision = "==0.16.0"
+opencv-python = "*"
+einops = "*"
+matplotlib = "*"
+timm = "*"
+av = "*"
+basicsr = "==1.4.2"
+gradio = "==3.44.4"
+numba = "==0.57.0"
+imageio-ffmpeg = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
