@@ -149,6 +149,9 @@ def run_keyframe_translation(config):
         add_num = 3 - len(sublists[-1])
         sublists[-1] = sublists[-2][-add_num:] + sublists[-1]
         sublists[-2] = sublists[-2][:-add_num]
+
+    if not sublists[-2]:
+        del sublists[-2]
         
     print('processing %d batches:\nkeyframe indexes'%(len(sublists)), sublists)    
 
@@ -305,7 +308,7 @@ if __name__ == '__main__':
 
     print('=' * 100)
     print('loading configuration...')
-    with open('./config/config_carturn.yaml', "r") as f:
+    with open(opt.config_path, "r") as f:
         config = yaml.safe_load(f)
         
     for name, value in sorted(config.items()):
