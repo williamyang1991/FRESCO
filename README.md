@@ -27,6 +27,8 @@ https://github.com/williamyang1991/FRESCO/assets/18130694/aad358af-4d27-4f18-b06
 - [03/2024] This website is created.
 
 ### TODO
+- [x] Integrate into Diffusers
+- [x] Add Huggingface web demo
 - [x] ~~Add webUI.~~
 - [x] ~~Update readme~~
 - [x] ~~Upload paper to arXiv, release related material~~
