@@ -1,35 +1,11 @@
-% torch 2.1.0
-conda create --name diffuser python==3.8.5
-conda activate diffuser
-pip install --upgrade diffusers[torch]==0.19.3
-pip install transformers
-pip install torchvision==0.16.0
-pip install opencv-python
-pip install einops
-pip install matplotlib
-pip install timm
-pip install av
-pip install basicsr==1.4.2
-
-
-% torch 2.0.0
-conda create --name diffusers python==3.8.5
-conda activate diffusers
-pip install torch==2.0.0 torchvision==0.15.1 --index-url https://download.pytorch.org/whl/cu118
-pip install diffusers[torch]==0.19.3
-pip install transformers
-pip install opencv-contrib-python
-pip install einops
-pip install matplotlib
-pip install timm
-pip install av
-pip install basicsr==1.4.2
-
-
-% for ebsynth
-pip install numba==0.57.0
-pip install imageio-ffmpeg
-
-
-% for webUI
-pip install gradio==3.44.4
+diffusers[torch]==0.19.3
+transformers
+opencv-python
+einops
+matplotlib
+timm
+av
+basicsr==1.4.2
+numba==0.57.0
+imageio-ffmpeg
+gradio==3.44.4

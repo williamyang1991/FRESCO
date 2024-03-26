@@ -1,0 +1,11 @@
+model/*
+output/*
+
+*.pth
+*.pyc
+src/ControlNet
+src/ControlNet/*
+src/ebsynth
+src/ebsynth/*
+
+.DS_Store
