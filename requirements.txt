@@ -1,6 +1,5 @@
 diffusers[torch]==0.19.3
 transformers
-torchvision==0.16.0
 opencv-python
 einops
 matplotlib

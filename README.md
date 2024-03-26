@@ -41,6 +41,12 @@ cd FRESCO
 ```
 
 2. You can simply set up the environment with pip based on [requirements.txt](https://github.com/williamyang1991/FRESCO/blob/main/requirements.txt)
+    - Create a conda environment and install torch >= 2.0.0. Here is an example script to install torch 2.0.0 + CUDA 11.8 :
+    ```
+    conda create --name diffusers python==3.8.5
+    conda activate diffusers
+    pip install torch==2.0.0 torchvision==0.15.1 --index-url https://download.pytorch.org/whl/cu118
+    ```
     - Run `pip install -r requirments.txt` in an environment where torch is installed.
     - We have tested on torch 2.0.0/2.1.0 and diffusers 0.19.3
     - If you use new versions of diffusers, you need to modify [my_forward()](https://github.com/williamyang1991/FRESCO/blob/fb991262615665de88f7a8f2cc903d9539e1b234/src/diffusion_hacked.py#L496)
