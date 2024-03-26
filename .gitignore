@@ -1,4 +1,6 @@
 output/*
 *.pyc
+src/ControlNet
 src/ControlNet/*
+src/ebsynth
 src/ebsynth/*
