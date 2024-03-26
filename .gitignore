@@ -1,0 +1,4 @@
+output/*
+*.pyc
+src/ControlNet/*
+src/ebsynth/*
