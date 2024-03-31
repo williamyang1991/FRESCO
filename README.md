@@ -27,8 +27,8 @@ https://github.com/williamyang1991/FRESCO/assets/18130694/aad358af-4d27-4f18-b06
 - [03/2024] This website is created.
 
 ### TODO
-- [x] Integrate into Diffusers
-- [x] Add Huggingface web demo
+- [ ] Integrate into Diffusers
+- [ ] Add Huggingface web demo
 - [x] ~~Add webUI.~~
 - [x] ~~Update readme~~
 - [x] ~~Upload paper to arXiv, release related material~~
@@ -49,7 +49,7 @@ cd FRESCO
     conda activate diffusers
     pip install torch==2.0.0 torchvision==0.15.1 --index-url https://download.pytorch.org/whl/cu118
     ```
-    - Run `pip install -r requirments.txt` in an environment where torch is installed.
+    - Run `pip install -r requirements.txt` in an environment where torch is installed.
     - We have tested on torch 2.0.0/2.1.0 and diffusers 0.19.3
     - If you use new versions of diffusers, you need to modify [my_forward()](https://github.com/williamyang1991/FRESCO/blob/fb991262615665de88f7a8f2cc903d9539e1b234/src/diffusion_hacked.py#L496)
 
