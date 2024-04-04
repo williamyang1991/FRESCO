@@ -110,20 +110,20 @@ def apply_control(x, detector, control_type):
 class ProcessingState(Enum):
     NULL = 0
     KEY_IMGS = 1
-    
-    
+
+
 def cfg_to_input(filename):
 
     with open(filename, "r") as f:
         cfg = yaml.safe_load(f)
     use_constraints = [
-                        'spatial-guided attention',
-                        'cross-frame attention',
-                        'temporal-guided attention',
-                        'spatial-guided optimization',
-                        'temporal-guided optimization',
-                    ]
-    
+        'spatial-guided attention',
+        'cross-frame attention',
+        'temporal-guided attention',
+        'spatial-guided optimization',
+        'temporal-guided optimization',
+    ]
+
     a_prompt = 'RAW photo, subject, (high detailed skin:1.2), 8k uhd, dslr, soft lighting, high quality, film grain, Fujifilm XT3'
     n_prompt = '(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime, mutated hands and fingers:1.4), (deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, disconnected limbs, mutation, mutated, ugly, disgusting, amputation'
     frame_count = get_frame_count(cfg['file_path'])
@@ -225,7 +225,7 @@ def process1(input_path, prompt, sd_model, seed, image_resolution, control_stren
     video_cap = cv2.VideoCapture(input_path)
     frame_num = min(frame_count, int(video_cap.get(cv2.CAP_PROP_FRAME_COUNT)))
     fps = int(video_cap.get(cv2.CAP_PROP_FPS))
-    
+
     if mininterv > maxinterv:
         mininterv = maxinterv
 
@@ -418,7 +418,7 @@ with block:
                                   format='mp4',
                                   visible=True)
             prompt = gr.Textbox(label='Prompt')
-            sd_model = gr.Dropdown(['SG161222/Realistic_Vision_V2.0', 
+            sd_model = gr.Dropdown(['SG161222/Realistic_Vision_V2.0',
                                     'runwayml/stable-diffusion-v1-5',
                                     'stablediffusionapi/rev-animated',
                                     'stablediffusionapi/flat-2d-animerge'],
@@ -568,9 +568,7 @@ with block:
                                         step=1)
 
             with gr.Accordion('Example configs', open=True):
-                
-                
-                
+
                 example_list = [cfg_to_input(x) for x in config_list]
 
                 ips = [
@@ -594,7 +592,7 @@ with block:
             result_video = gr.Video(label='Output full video',
                                     format='mp4',
                                     interactive=False)
-            
+
     def input_changed(path):
         if path is None:
             return (gr.Slider.update(), gr.Slider.update(), gr.Slider.update())
@@ -610,19 +608,21 @@ with block:
         max_interv_c = min(20, frame_count)
         min_interv_r = frame_count
         max_interv_r = frame_count
-        return (gr.Slider.update(minimum=min_interv_l, 
-                                value=min_interv_c,
-                                maximum=min_interv_r),
-            gr.Slider.update(minimum=max_interv_l, 
-                                value=max_interv_c,
-                                maximum=max_interv_r),
-            gr.Slider.update(minimum=8, 
-                                value=frame_count,
-                                maximum=frame_count),
-            )
+        return (gr.Slider.update(minimum=min_interv_l,
+                                 value=min_interv_c,
+                                 maximum=min_interv_r),
+                gr.Slider.update(minimum=max_interv_l,
+                                 value=max_interv_c,
+                                 maximum=max_interv_r),
+                gr.Slider.update(minimum=8,
+                                 value=frame_count,
+                                 maximum=frame_count),
+                )
 
-    input_path.change(input_changed, input_path, [mininterv, maxinterv, frame_count])
-    input_path.upload(input_changed, input_path, [mininterv, maxinterv, frame_count])
+    input_path.change(input_changed, input_path, [
+                      mininterv, maxinterv, frame_count])
+    input_path.upload(input_changed, input_path, [
+                      mininterv, maxinterv, frame_count])
 
     run_button.click(fn=process,
                      inputs=ips,
