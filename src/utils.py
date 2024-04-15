@@ -30,6 +30,12 @@ def cv2sod(img):
     image = torch.Tensor(in_)
     return F.interpolate(image.unsqueeze(0), scale_factor=0.5, mode='bilinear')
 
+def get_frame_count(video_path: str):
+    video = cv2.VideoCapture(video_path)
+    frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+    video.release()
+    return frame_count
+
 def resize_image(input_image, resolution):
     H, W, C = input_image.shape
     H = float(H)
