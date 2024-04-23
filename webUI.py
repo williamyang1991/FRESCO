@@ -132,10 +132,13 @@ def cfg_to_input(filename):
         n_prompt = 'longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality'
 
     frame_count = get_frame_count(cfg['file_path'])
+    num_warmup_steps = cfg['num_warmup_steps'] 
+    num_inference_steps = cfg['num_inference_steps']
+    strength = (num_inference_steps - num_warmup_steps) / num_inference_steps
     args = [
         cfg['file_path'], cfg['prompt'], cfg['sd_path'], cfg['seed'], 512, cfg['cond_scale'],
-        1.0, cfg['controlnet_type'], 50, 100,
-        cfg['num_inference_steps'], 7.5, a_prompt, n_prompt,
+        strength, cfg['controlnet_type'], 50, 100,
+        num_inference_steps, 7.5, a_prompt, n_prompt,
         frame_count, cfg['batch_size'], cfg['mininterv'], cfg['maxinterv'],
         use_constraints, True, True, 4,
         1, 1, 1, 1
@@ -609,15 +612,11 @@ with block:
                            'Please input another video.')
         min_interv_l = 1
         max_interv_l = 1
-        min_interv_c = min(5, frame_count)
-        max_interv_c = min(20, frame_count)
         min_interv_r = frame_count
         max_interv_r = frame_count
         return (gr.Slider.update(minimum=min_interv_l,
-                                 value=min_interv_c,
                                  maximum=min_interv_r),
                 gr.Slider.update(minimum=max_interv_l,
-                                 value=max_interv_c,
                                  maximum=max_interv_r),
                 gr.Slider.update(minimum=8,
                                  value=frame_count,
