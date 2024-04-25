@@ -6,6 +6,8 @@
 in CVPR 2024 <br>
 [**Project Page**](https://www.mmlab-ntu.com/project/fresco/) | [**Paper**](https://arxiv.org/abs/2403.12962) | [**Supplementary Video**](https://youtu.be/jLnGx5H-wLw) | [**Input Data and Video Results**](https://drive.google.com/file/d/12BFx3hp8_jp9m0EmKpw-cus2SABPQx2Q/view?usp=sharing) <br>
 
+<a href="https://huggingface.co/spaces/PKUWilliamYang/FRESCO"><img src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm-dark.svg" alt="Web Demo"></a> 
+
 **Abstract:** *The remarkable efficacy of text-to-image diffusion models has motivated extensive exploration of their potential application in video domains.
 Zero-shot methods seek to extend image diffusion models to videos without necessitating model training.
 Recent methods mainly focus on incorporating inter-frame correspondence into attention mechanisms. However, the soft constraint imposed on determining where to attend to valid features can sometimes be insufficient, resulting in temporal inconsistency.
@@ -22,13 +24,14 @@ https://github.com/williamyang1991/FRESCO/assets/18130694/aad358af-4d27-4f18-b06
 
 
 ## Updates
-- [03/2023] Paper is released.
-- [03/2023] Code is released.
+- [04/2024] Integrated to 🤗 [Hugging Face](https://huggingface.co/spaces/PKUWilliamYang/FRESCO). Enjoy the web demo!
+- [03/2024] Paper is released.
+- [03/2024] Code is released.
 - [03/2024] This website is created.
 
 ### TODO
 - [ ] Integrate into Diffusers
-- [ ] Add Huggingface web demo
+- [x] ~~Add Huggingface web demo~~
 - [x] ~~Add webUI.~~
 - [x] ~~Update readme~~
 - [x] ~~Upload paper to arXiv, release related material~~
