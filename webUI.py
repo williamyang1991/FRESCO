@@ -72,10 +72,20 @@ def get_models(config):
         detector = HEDdetector()
 
     # diffusion model
-    vae = AutoencoderKL.from_pretrained(
-        "stabilityai/sd-vae-ft-mse", torch_dtype=torch.float16)
-    pipe = StableDiffusionPipeline.from_pretrained(
-        config['sd_path'], vae=vae, torch_dtype=torch.float16)
+    # Since the get_models function is only used for config/config_dog.yaml, this change is meaningless at this time.
+    # But I think it is better to allow local models to be specified in config.yaml as well.
+
+    # check if vae and sd model are in specified local directory
+    if config.get('vae') and config.get('local_vae_list') and config.get('local_vae_dir_path') and config.get('vae') in config.get('local_vae_list'):
+        vae_path = os.path.join(config['local_vae_dir_path'], config['vae'])
+        vae = AutoencoderKL.from_single_file(vae_path)
+    else:
+        vae = AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse", torch_dtype=torch.float16)
+    if config.get('local_model_list') and config.get('local_model_dir_path') and config.get('sd_pth') in config.get('local_model_list'):
+        sd_path = os.path.join(config['local_model_dir_path'], config['sd_path'])
+        pipe = StableDiffusionPipeline.from_single_file(sd_path, vae=vae)
+    else:
+        pipe = StableDiffusionPipeline.from_pretrained(config['sd_path'], vae=vae, torch_dtype=torch.float16)
     pipe.scheduler = DDPMScheduler.from_config(pipe.scheduler.config)
     pipe.to("cuda")
     pipe.scheduler.set_timesteps(
@@ -130,13 +140,16 @@ def cfg_to_input(filename):
     else:
         a_prompt = 'best quality, extremely detailed'
         n_prompt = 'longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality'
+    
+    # use default vae if not specified
+    vae = cfg['vae'] if cfg['vae'] else 'stabilityai/sd-vae-ft-mse'
 
     frame_count = get_frame_count(cfg['file_path'])
     num_warmup_steps = cfg['num_warmup_steps'] 
     num_inference_steps = cfg['num_inference_steps']
     strength = (num_inference_steps - num_warmup_steps) / num_inference_steps
     args = [
-        cfg['file_path'], cfg['prompt'], cfg['sd_path'], cfg['seed'], 512, cfg['cond_scale'],
+        cfg['file_path'], cfg['prompt'], cfg['sd_path'], vae, cfg['seed'], 512, cfg['cond_scale'],
         strength, cfg['controlnet_type'], 50, 100,
         num_inference_steps, 7.5, a_prompt, n_prompt,
         frame_count, cfg['batch_size'], cfg['mininterv'], cfg['maxinterv'],
@@ -165,6 +178,67 @@ class GlobalState:
         self.sod_model = sod_model
         self.keys = []
 
+        # use personal settings
+        # Although it seems to be better to store it in the config directory, I decided to store it in the parent directory
+        # since config.yaml is the configuration for generation.
+
+        personal_settings_path = 'personal_settings.yaml'
+
+        # check if personal_settings.yaml exists
+        if os.path.exists(personal_settings_path):
+            with open(personal_settings_path, "r") as f:
+                personal_settings = yaml.safe_load(f)
+                print(personal_settings)
+                local_model_dir_path = os.path.normpath(personal_settings.get('local_model_dir_path')) if personal_settings.get('local_model_dir_path') else ""        
+                local_model_list = [
+                    f for f in os.listdir(local_model_dir_path) if ('.ckpt' in f or '.safetensor' in f)
+                ] if local_model_dir_path else []
+                local_vae_dir_path = os.path.normpath(personal_settings.get('local_vae_dir_path')) if personal_settings.get('local_vae_dir_path') else ""
+                local_vae_list = [
+                    f for f in os.listdir(local_vae_dir_path) if ('.pt' in f or '.safetensor' in f)
+                ] if local_vae_dir_path else []
+                output_path = os.path.normpath(personal_settings.get('output_path')) if personal_settings.get('output_path') else ""
+                output_mode = personal_settings.get('output_mode') if personal_settings.get('output_mode') else "immutable"
+
+        # create personal_settings.yaml if it does not exist
+        else:
+            personal_settings = {
+                'local_model_dir_path': "",
+                'local_vae_dir_path': "",
+                'output_path': "",
+                'output_mode': "immutable",
+                'use_embeddings': "False",
+                'embeddings_path': "",
+                'lora_path': ""
+            }
+            with open('personal_settings.yaml', 'w') as f:
+                yaml.dump(personal_settings, f, default_flow_style=False, allow_unicode=True)
+            local_model_dir_path = ""
+            local_model_list = []
+            local_vae_dir_path = ""
+            local_vae_list = []
+            output_path = ""
+            output_mode = "immutable"
+        
+        # default models / default vae
+        # In the future, it would be nice to be able to set these up as well.
+        default_models = ['SG161222/Realistic_Vision_V2.0', 
+                    'runwayml/stable-diffusion-v1-5',
+                    'stablediffusionapi/rev-animated',
+                    'stablediffusionapi/flat-2d-animerge']
+        default_vae = ['stabilityai/sd-vae-ft-mse']
+        
+        self.model_list = default_models + local_model_list
+        self.local_model_dir_path = local_model_dir_path
+        self.local_model_list = local_model_list
+
+        self.vae_list = default_vae + local_vae_list
+        self.local_vae_list = local_vae_list
+        self.local_vae_dir_path = local_vae_dir_path
+
+        self.output_path = output_path
+        self.output_mode = output_mode
+
     def update_controlnet_model(self, control_type):
         if self.control_type == control_type:
             return
@@ -182,14 +256,24 @@ class GlobalState:
         for param in self.controlnet.parameters():
             param.requires_grad = False
 
-    def update_sd_model(self, sd_model):
-        if self.sd_model == sd_model:
+    def update_sd_model(self, sd_model, vae):
+        if self.sd_model == sd_model and self.vae == vae:
             return
         self.sd_model = sd_model
-        vae = AutoencoderKL.from_pretrained(
-            "stabilityai/sd-vae-ft-mse", torch_dtype=torch.float16)
-        self.pipe = StableDiffusionPipeline.from_pretrained(
-            sd_model, vae=vae, torch_dtype=torch.float16)
+        self.vae = vae
+
+        # check if vae and sd model are in specified local directory
+        # if not, use default vae and sd model in huggingface hub cache
+        if vae and self.local_vae_list and self.local_vae_dir_path and vae in self.local_vae_list:
+            vae_path = os.path.join(self.local_vae_dir_path, vae)
+            vae = AutoencoderKL.from_single_file(vae_path)
+        else:
+            vae = AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse", torch_dtype=torch.float16)
+        if self.local_model_list and self.local_model_dir_path and sd_model in self.local_model_list:
+            sd_path = os.path.join(self.local_model_dir_path, sd_model)
+            self.pipe = StableDiffusionPipeline.from_single_file(sd_path, vae=vae, torch_dtype=torch.float16)
+        else:
+            self.pipe = StableDiffusionPipeline.from_pretrained(sd_model, vae=vae, torch_dtype=torch.float16)
         self.pipe.scheduler = DDPMScheduler.from_config(
             self.pipe.scheduler.config)
         self.pipe.to("cuda")
@@ -208,7 +292,7 @@ def process(*args):
 
 
 @torch.no_grad()
-def process1(input_path, prompt, sd_model, seed, image_resolution, control_strength,
+def process1(input_path, prompt, sd_model, vae, seed, image_resolution, control_strength,
              x0_strength, control_type, low_threshold, high_threshold,
              ddpm_steps, scale, a_prompt, n_prompt,
              frame_count, batch_size, mininterv, maxinterv,
@@ -220,7 +304,40 @@ def process1(input_path, prompt, sd_model, seed, image_resolution, control_stren
     apply_freeu(global_state.pipe, b1=b1, b2=b2, s1=s1, s2=s2)
 
     filename = os.path.splitext(os.path.basename(input_path))[0]
-    save_path = os.path.join('output', filename)
+
+    # output path
+    # use output directory specified in personal_settings.yaml
+    # if not, use default output directory
+    save_dir = global_state.output_path if global_state.output_path else 'output'
+    save_path = os.path.join(save_dir, filename)
+
+    # output behavior
+    # The original behavior of FRESCO's webUI.py is that the blend.mp4, key directory, etc. are overwritten each time they are generated.
+    # I believe that some users would like to avoid this, so I devised a configuration to avoid overwriting
+    # by making the naming of directories and blend.mp4 incremental.
+    # The following is the part of handling directory names.
+    if global_state.output_mode == 'incremental':
+        if os.path.exists(save_path):
+            existing_dirs = [
+                f for f in os.listdir(save_path) if os.path.isdir(os.path.join(save_path, f)) and f.isdigit()
+            ]
+            dir_numbers = [
+                int(d) for d in existing_dirs
+            ]
+            if len(dir_numbers) == 0:
+                latest_dir_number = 0
+            else:
+                latest_dir_number = dir_numbers[0] 
+                for i in range(1, len(dir_numbers)):
+                    if dir_numbers[i] > latest_dir_number:
+                        latest_dir_number = dir_numbers[i]
+            new_dir_name = str(latest_dir_number + 1)
+            save_path = os.path.join(save_path, new_dir_name)
+        else:
+            os.mkdir(save_path)
+            save_path = os.path.join(save_path, '1')
+    global_state.working_dir = save_path
+
     device = global_state.pipe._execution_device
     guidance_scale = scale
     do_classifier_free_guidance = True
@@ -375,7 +492,7 @@ def process1(input_path, prompt, sd_model, seed, image_resolution, control_stren
 
 
 @torch.no_grad()
-def process2(input_path, prompt, sd_model, seed, image_resolution, control_strength,
+def process2(input_path, prompt, sd_model, vae, seed, image_resolution, control_strength,
              x0_strength, control_type, low_threshold, high_threshold,
              ddpm_steps, scale, a_prompt, n_prompt,
              frame_count, batch_size, mininterv, maxinterv,
@@ -387,13 +504,35 @@ def process2(input_path, prompt, sd_model, seed, image_resolution, control_stren
         raise gr.Error('Please generate key images before propagation')
 
     # reset blend dir
-    filename = os.path.splitext(os.path.basename(input_path))[0]
-    blend_dir = os.path.join('output', filename)
+    # The blend dir was changed because the directory name may be changed in process1.
+    # ToDo: Add error handling when globl_state.working_dir does not exist.
+    working_dir = global_state.working_dir
+    blend_dir = working_dir
     os.makedirs(blend_dir, exist_ok=True)
 
     video_cap = cv2.VideoCapture(input_path)
     fps = int(video_cap.get(cv2.CAP_PROP_FPS))
-    o_video = os.path.join(blend_dir, 'blend.mp4')
+
+    # save name for output video
+    # if the setting is "incremental," blend video names are incremented.
+    save_name = 'blend.mp4'
+    if global_state.output_mode == 'incremental':
+        existing_blends = [
+            f for f in os.listdir(blend_dir) if f.split('.mp4')[0].split('blend_')[-1].isdigit()
+        ]
+        blend_numbers = [
+            int(d.split('.mp4')[0].split('blend_')[-1]) for d in existing_blends
+        ]
+        if len(blend_numbers) == 0:
+            latest_blend_number = 0
+        else:
+            latest_blend_number = blend_numbers[0] 
+            for i in range(1, len(blend_numbers)):
+                if blend_numbers[i] > latest_blend_number:
+                    latest_blend_number = blend_numbers[i]
+        save_name = 'blend_' + str(latest_blend_number + 1) + '.mp4'
+    o_video = os.path.join(blend_dir, save_name)
+
     key_ind = io.StringIO()
     for k in global_state.keys:
         print('%d' % (k), end=' ', file=key_ind)
@@ -406,6 +545,17 @@ def process2(input_path, prompt, sd_model, seed, image_resolution, control_stren
     os.system(cmd)
     return o_video
 
+# save personal settings
+@torch.no_grad()
+def save_settings(local_model_dir_path, local_vae_dir_path, output_path, output_mode):
+    personal_settings = {
+        'local_model_dir_path': local_model_dir_path,
+        'local_vae_dir_path': local_vae_dir_path,
+        'output_path': output_path,
+        'output_mode': output_mode,
+    }
+    with open('personal_settings.yaml', 'w') as f:
+        yaml.dump(personal_settings, f, default_flow_style=False, allow_unicode=True)
 
 config_dir = 'config'
 filenames = os.listdir(config_dir)
@@ -426,12 +576,13 @@ with block:
                                   format='mp4',
                                   visible=True)
             prompt = gr.Textbox(label='Prompt')
-            sd_model = gr.Dropdown(['SG161222/Realistic_Vision_V2.0',
-                                    'runwayml/stable-diffusion-v1-5',
-                                    'stablediffusionapi/rev-animated',
-                                    'stablediffusionapi/flat-2d-animerge'],
+            # display sd_models and vae including local ones
+            sd_model = gr.Dropdown(global_state.model_list,
                                    label='Base model',
-                                   value='SG161222/Realistic_Vision_V2.0')
+                                   value=global_state.model_list[0])
+            vae = gr.Dropdown(global_state.vae_list,
+                                   label='Base vae',
+                                   value=global_state.vae_list[0])
             seed = gr.Slider(label='Seed',
                              minimum=0,
                              maximum=2147483647,
@@ -580,7 +731,7 @@ with block:
                 example_list = [cfg_to_input(x) for x in config_list]
 
                 ips = [
-                    input_path, prompt, sd_model, seed, image_resolution, control_strength,
+                    input_path, prompt, sd_model, vae, seed, image_resolution, control_strength,
                     x0_strength, control_type, low_threshold, high_threshold,
                     ddpm_steps, scale, a_prompt, n_prompt,
                     frame_count, batch_size, mininterv, maxinterv,
@@ -592,6 +743,14 @@ with block:
                     examples=example_list,
                     inputs=[*ips],
                 )
+
+            with gr.Accordion('Settings', open=False):
+                gr.Markdown('Restart the UI to apply the new settings(not reload the browser).')
+                local_model_dir_path = gr.Textbox(label='Local Models Directory Path', value=global_state.local_model_dir_path)
+                local_vae_dir_path = gr.Textbox(label='Local VAE Directory Path', value=global_state.local_vae_dir_path)
+                output_path = gr.Textbox(label='Output Path', info='"output", if not specified. Depending on the path, you may need to run FRESCO as administrator.', value=global_state.output_path)
+                output_mode = gr.Radio(["immutable", "incremental"], label='Output Directory Mode', info='Default is "immutable", meaning always overwrite existing output.', value=global_state.output_mode, interactive=True)
+                run_save_settings = gr.Button(value='Save Settings')
 
         with gr.Column():
             result_keyframe = gr.Video(label='Output key frame video',
@@ -633,5 +792,8 @@ with block:
                      outputs=[result_keyframe, result_video])
     run_button1.click(fn=process1, inputs=ips, outputs=[result_keyframe])
     run_button2.click(fn=process2, inputs=ips, outputs=[result_video])
+
+    # run save settings
+    run_save_settings.click(fn=save_settings, inputs= [local_model_dir_path, local_vae_dir_path, output_path, output_mode])
 
 block.launch()
