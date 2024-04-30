@@ -165,7 +165,31 @@ Please check the explanations in the WebUI section.
 We provide a separate Ebsynth python script `video_blend.py` with the temporal blending algorithm introduced in
 [Stylizing Video by Example](https://dcgi.fel.cvut.cz/home/sykorad/ebsynth.html) for interpolating style between key frames.
 It can work on your own stylized key frames independently of our FRESCO algorithm.
-For the details, please refer to our previous work [Rerender-A-Video](https://github.com/williamyang1991/Rerender_A_Video/tree/main?tab=readme-ov-file#our-ebsynth-implementation)
+
+```python
+video_blend.py [-h] [--output OUTPUT] [--fps FPS] [--key_ind KEY_IND [KEY_IND ...]] [--key KEY] [--n_proc N_PROC] [-ps] [-ne] [-tmp] name
+
+positional arguments:
+  name                  Path to input video
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --output OUTPUT       Path to output video
+  --fps FPS             The FPS of output video
+  --key_ind KEY_IND [KEY_IND ...]
+                        key frame index
+  --key KEY             The subfolder name of stylized key frames
+  --n_proc N_PROC       The max process count
+  -ps                   Use poisson gradient blending
+  -ne                   Do not run ebsynth (use previous ebsynth output)
+  -tmp                  Keep temporary output
+```
+An example
+```
+python video_blend.py ./output/dog/ --key keys --key_ind 0 11 23 33 49 60 72 82 93 106 120 137 151 170 182 193 213 228 238 252 262 288 299  --output ./output/dog/blend.mp4 --fps 24 --n_proc 4 -ps
+```
+
+For the details, please refer to our previous work [Rerender-A-Video](https://github.com/williamyang1991/Rerender_A_Video/tree/main?tab=readme-ov-file#our-ebsynth-implementation) (The mainly difference is the way of specifying key frame index)
 
 ## (2) Results
 
