@@ -24,7 +24,7 @@ https://github.com/williamyang1991/FRESCO/assets/18130694/aad358af-4d27-4f18-b06
 
 
 ## Updates
-- [05/2024] The Diffusers pipeline is available: (https://github.com/huggingface/diffusers/tree/main/examples/community#fresco).
+- [05/2024] The Diffusers pipeline is available: [FRESCO Community Pipeline](https://github.com/huggingface/diffusers/tree/main/examples/community#fresco).
 - [04/2024] Integrated to 🤗 [Hugging Face](https://huggingface.co/spaces/PKUWilliamYang/FRESCO). Enjoy the web demo!
 - [03/2024] Paper is released.
 - [03/2024] Code is released.
